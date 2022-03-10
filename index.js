@@ -1,3 +1,5 @@
+var bigDecimal = require('js-big-decimal');
+
 // Lets implement your first function
 // For now we are not bothering with exporting anything because we are just
 // testing our functions and seeing if they output the right stuff.
@@ -10,13 +12,19 @@
 // - Fixed annuities
 // - Floating point math in Javascript
 
-const presentValue = (interestRate, periods, monthlyPayment) => {
-  // Here we do stuff, to start I'm just logging Hello World so when you run
-  // `yarn start` from the command line it shows something
-  console.log("Hello world");
+const presentValue = (interestRate, periods, futureValue) => {
+  return futureValue / ((1 + interestRate) ** periods);
 };
+
+const futureValue = (interestRate, periodsPerYear, numberOfYears, presentValue) => {
+  return presentValue * (1 + (interestRate / periodsPerYear)) * (periodsPerYear * numberOfYears);
+};
+
+
 
 // 1% interest rate, 30 years, $200,000
 // - Use an online calculator to find the answer
 // - Run `yarn start` in your console to see the output and check your answer
-presentValue(0.01, 360, 200_000);
+console.log(presentValue(0.01, 360, 200_000));
+
+console.log(futureValue(0.01, 12, 30, 5563.337841871002));
