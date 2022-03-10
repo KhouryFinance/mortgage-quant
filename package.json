@@ -5,5 +5,11 @@
   "main": "index.js",
   "author": "Andrew L Donald <andrew.lawrence.donald@gmail.com>",
   "license": "MIT",
-  "private": false
+  "private": false,
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "node": "^17.5.0"
+  }
 }
