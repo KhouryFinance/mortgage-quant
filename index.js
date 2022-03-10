@@ -12,19 +12,30 @@ var bigDecimal = require('js-big-decimal');
 // - Fixed annuities
 // - Floating point math in Javascript
 
+
+// Present Value calculation
 const presentValue = (interestRate, periods, futureValue) => {
   return futureValue / ((1 + interestRate) ** periods);
 };
+
+
+console.log(presentValue(0.01, 360, 200_000));
+
+// Present value outputs as accurate, despite possible issues with decimals
+
+
+// Future Value calculation - attempting to reverse the equation to present value to validate
 
 const futureValue = (interestRate, periodsPerYear, numberOfYears, presentValue) => {
   return presentValue * (1 + (interestRate / periodsPerYear)) * (periodsPerYear * numberOfYears);
 };
 
+console.log(futureValue(0.01, 12, 30, 5563.337841871002));
+
+// Outputs an inaccurate number
 
 
 // 1% interest rate, 30 years, $200,000
 // - Use an online calculator to find the answer
 // - Run `yarn start` in your console to see the output and check your answer
-console.log(presentValue(0.01, 360, 200_000));
 
-console.log(futureValue(0.01, 12, 30, 5563.337841871002));
