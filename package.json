@@ -1,0 +1,9 @@
+{
+  "name": "mortgage-quant",
+  "version": "0.1.0",
+  "description": "Suite of JavaScript calculators for mortgages",
+  "main": "index.js",
+  "author": "Andrew L Donald <andrew.lawrence.donald@gmail.com>",
+  "license": "MIT",
+  "private": false
+}
