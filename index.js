@@ -27,7 +27,7 @@ console.log(presentValue(0.01, 360, 200_000));
 // Future Value calculation - attempting to reverse the equation to present value to validate
 
 const futureValue = (interestRate, periodsPerYear, numberOfYears, presentValue) => {
-  return presentValue * (1 + (interestRate / periodsPerYear)) * (periodsPerYear * numberOfYears);
+  return ((presentValue *1000000000000) * (1 + ((interestRate * 100) / periodsPerYear)) * (periodsPerYear * numberOfYears)) / 100,000,000,000,000;
 };
 
 console.log(futureValue(0.01, 12, 30, 5563.337841871002));
