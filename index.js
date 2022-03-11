@@ -64,3 +64,25 @@ console.log('Future Value of Payments:', futureValuePaymentsAnswer.toString());
 
 
 // Verified the above with examples, gives the future value of payments but isn't what Nolan has in his ruby code, doesn't output relevant answer
+
+
+// TRANSLATING THE RUBY CODE:
+
+
+
+const futureValueMortgage = (numberOfPayPeriods, annualInterestRate, periodicPayment, newPresentValue) => {
+  numberOfPayPeriods = BigNumber(numberOfPayPeriods);
+  annualInterestRate = BigNumber(annualInterestRate);
+  periodicPayment = BigNumber(periodicPayment);
+  newPresentValue = BigNumber(newPresentValue);
+
+  let effectiveRate = (annualInterestRate.plus(1)).exponentiatedBy(numberOfPayPeriods);
+
+  effectiveRate = BigNumber(effectiveRate);
+
+  return (effectiveRate.times(newPresentValue)).plus(periodicPayment.times((annualInterestRate.times(0)).plus(1)).times(effectiveRate.minus(1)).dividedBy(annualInterestRate));
+};
+
+const futureValueMortgageAnswer = futureValueMortgage(30, 0.04, 2_148, 450_000);
+
+console.log('Future Value Mortgage:', futureValueMortgageAnswer.toString());
