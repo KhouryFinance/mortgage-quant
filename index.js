@@ -1,4 +1,4 @@
-var bigDecimal = require('js-big-decimal');
+import BigNumber from "bignumber.js";
 
 // Lets implement your first function
 // For now we are not bothering with exporting anything because we are just
@@ -13,29 +13,34 @@ var bigDecimal = require('js-big-decimal');
 // - Floating point math in Javascript
 
 
-// Present Value calculation
-const presentValue = (interestRate, periods, futureValue) => {
-  return futureValue / ((1 + interestRate) ** periods);
+export const presentValue = (annualInterestRate, numberOfYears, futureValue) => {
+  futureValue = BigNumber(futureValue);
+  annualInterestRate = BigNumber(annualInterestRate);
+  numberOfYears = BigNumber(numberOfYears);
+  return futureValue.dividedBy((annualInterestRate.plus(1)).exponentiatedBy(numberOfYears));
 };
 
+const presentValueAnswer = presentValue(0.01, 30, 200_000);
 
-console.log(presentValue(0.01, 360, 200_000));
-
-// Present value outputs as accurate, despite possible issues with decimals
+console.log('Present Value:', presentValueAnswer.toString());
 
 
-// Future Value calculation - attempting to reverse the equation to present value to validate
 
-const futureValue = (interestRate, periodsPerYear, numberOfYears, presentValue) => {
-  return ((presentValue *1_000_000_000_000) * (1 + ((interestRate * 100) / periodsPerYear)) * (periodsPerYear * numberOfYears)) / 100_000_000_000_000;
+const futureValue = (annualInterestRate, numberOfYears, presentValue) => {
+  annualInterestRate = BigNumber(annualInterestRate);
+  numberOfYears = BigNumber(numberOfYears);
+  presentValue = BigNumber(presentValue);
+  return presentValue.times((annualInterestRate.plus(1)).exponentiatedBy(numberOfYears));
 };
 
-console.log(futureValue(0.01, 12, 30, 5563.337841871002));
+const futureValueAnswer = futureValue(0.01, 30, 148384.58355742485697957747);
 
-// Outputs an inaccurate number
+console.log('Future Value:', futureValueAnswer.toString());
 
 
-// 1% interest rate, 30 years, $200,000
-// - Use an online calculator to find the answer
-// - Run `yarn start` in your console to see the output and check your answer
 
+// I'm buying a home, putting down 50k down payment, 500k loan, 4% interest rate, over 30 years
+
+// $773,536.02
+
+// payment arguments - necessary
