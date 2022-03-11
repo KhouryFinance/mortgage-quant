@@ -30,6 +30,7 @@ const futureValue = (annualInterestRate, numberOfYears, presentValue) => {
   annualInterestRate = BigNumber(annualInterestRate);
   numberOfYears = BigNumber(numberOfYears);
   presentValue = BigNumber(presentValue);
+
   return presentValue.times((annualInterestRate.plus(1)).exponentiatedBy(numberOfYears));
 };
 
@@ -44,3 +45,22 @@ console.log('Future Value:', futureValueAnswer.toString());
 // $773,536.02
 
 // payment arguments - necessary
+
+
+// FutureValue over N periods =
+// periodicPayment[(1 + interestRate) ** periods - 1] / interestRate
+
+const futureValueOfPayments = (annualInterestRate, numberOfPayPeriods,  periodicPayment) => {
+  annualInterestRate = BigNumber(annualInterestRate);
+  numberOfPayPeriods = BigNumber(numberOfPayPeriods);
+  periodicPayment = BigNumber(periodicPayment);
+
+  return periodicPayment.times(((annualInterestRate.plus(1)).exponentiatedBy(numberOfPayPeriods).minus(1)).dividedBy(annualInterestRate));
+};
+
+const futureValuePaymentsAnswer = futureValueOfPayments(0.05, 5, 1_000);
+
+console.log('Future Value of Payments:', futureValuePaymentsAnswer.toString());
+
+
+// Verified the above with examples, gives the future value of payments but isn't what Nolan has in his ruby code, doesn't output relevant answer
