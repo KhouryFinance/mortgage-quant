@@ -10,13 +10,37 @@ analysis.
 # Installation
 
     yarn add mortgage-quant
-    
+
 or
 
     npm install mortgage-quant
 
 
 # Usage
+
+## A note about decimals in JavaScript
+JavaScript has a tough time handling decimals due to the garbled translation 
+from binary (base 2) to our workaday number system (base 10).
+
+For instance the code:
+
+```javascript
+	let result = (0.1 + 0.2 === 0.3);
+	console.log(result);
+```
+
+Evaluates to false due to to 0.1 + 0.2 = 0.30000000000000004. This is due to 
+the translation from binary.
+	
+In order to get some actual precision there's a few methods, with one of the 
+simplest being to use a library like we're doing, 
+such as [bignumber.js](https://github.com/MikeMcl/bignumber.js/)
+
+Bignumber.js and other modules like it cleanly translate decimals from binary 
+to base-10, please refer to their documentation for implementation instructions.
+
+Without a tool like BigNumber, our functions above would be dramatically 
+inaccurate. 
 
 ## Present Value - Lump Sum:
 
@@ -45,7 +69,7 @@ over a period of time, with a specific interest rate.
 
 ---
 
-## Future Value:
+## Future Value - Lump Sum:
 
 ```javascript
 import { futureValue } from 'mortgage-quant';
@@ -66,33 +90,8 @@ value (lump investment), an annual interest rate, and the number of years you
 intend to invest. 
 
 As we can see both present and future value functions output their reverse with 
-miniscule inaccuracies. The reasons for these inaccuracies is explained below.
+miniscule inaccuracies. The reasons for these inaccuracies is explained above.
 
-
-
-## A note about decimals in JavaScript
-JavaScript has a tough time handling decimals due to the garbled translation 
-from binary (base 2) to our workaday number system (base 10).
-
-For instance the code:
-
-```javascript
-	let result = (0.1 + 0.2 === 0.3);
-	console.log(result);
-```
-
-Evaluates to false due to to 0.1 + 0.2 = 0.30000000000000004. This is due to 
-the translation from binary.
-	
-In order to get some actual precision there's a few methods, with one of the 
-simplest being to use a library like we're doing, 
-such as [bignumber.js](https://github.com/MikeMcl/bignumber.js/)
-
-Bignumber.js and other modules like it cleanly translate decimals from binary 
-to base-10, please refer to their documentation for implementation instructions.
-
-Without a tool like BigNumber, our functions above would be dramatically 
-inaccurate. 
 
 ## Present Value of an Annuity
 
@@ -155,9 +154,14 @@ console.log(myMonthlyPayment);
 
 ```
 
+## About Monthly Payment
+
 The purpose of this function is to determine your monthly payment given a 
 mortgage amount, monthly compounding interest rate, and number of payments over 
 the course of the mortgage.
+
+Determining your monthly payment is necssary when using other calculators, such 
+as amortization schedules.
 
 
 
