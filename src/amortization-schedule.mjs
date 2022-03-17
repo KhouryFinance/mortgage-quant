@@ -1,9 +1,11 @@
 import BigNumber from "bignumber.js";
 import { monthlyPayment } from "./monthly-payment.mjs";
 
-const amortizationPrincipal = (
+// The following function determines the amount of your monthly payment that goes towards principal:
+
+const amortizationPrincipal = ( 
   monthlyPayment,
-  outstandingBalance,
+  outstandingBalance, 
   interestRate
 ) => {
   monthlyPayment = BigNumber(monthlyPayment);
@@ -14,6 +16,8 @@ const amortizationPrincipal = (
     outstandingBalance.times(interestRate.dividedBy(12))
   );
 };
+
+// This builds the rows for the array:
 
 const buildRow = ({
   payment,
@@ -40,7 +44,9 @@ const buildRow = ({
   return row;
 };
 
-const makeRow = (payment, totalInterest, balance, loanAmount) => {
+// These are the calculations that determine the values for the amortization table:
+
+const calculateRow = (payment, totalInterest, balance, loanAmount) => {
   let principal = amortizationPrincipal(payment, balance, 0.05);
   let interest = payment - principal;
   balance = balance.minus(principal);
@@ -61,6 +67,8 @@ const makeRow = (payment, totalInterest, balance, loanAmount) => {
   return { row, balance, totalInterest };
 };
 
+// This function iterates over the terms and creates the table:
+
 export const amortizationSchedule = (loanAmount, months, apr) => {
   let counter = 0;
   let remainingBalance = BigNumber(loanAmount);
@@ -69,7 +77,7 @@ export const amortizationSchedule = (loanAmount, months, apr) => {
   const amortizationArray = [];
 
   while (counter < months) {
-    const result = makeRow(
+    const result = calculateRow(
       monthly,
       totalInterest,
       remainingBalance,
