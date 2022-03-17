@@ -1,4 +1,5 @@
 import BigNumber from "bignumber.js";
+import { monthlyInterestRate } from "./src/utils.mjs";
 
 export { futureValue } from "./src/future-value-lump-sum.mjs";
 export { futureValueWithPayments } from "./src/future-value-with-payments.mjs";
@@ -40,4 +41,6 @@ const futureValueMortgage = (
     );
 };
 
-futureValueMortgage()
+let myFutureValueMortgage = futureValueMortgage(360, monthlyInterestRate(0.0275), -3265.93, 800000);
+
+console.log(myFutureValueMortgage.toFixed(4));

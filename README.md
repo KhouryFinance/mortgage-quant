@@ -25,8 +25,8 @@ from binary (base 2) to our workaday number system (base 10).
 For instance the code:
 
 ```javascript
-	let result = (0.1 + 0.2 === 0.3);
-	console.log(result);
+let result = (0.1 + 0.2 === 0.3);
+console.log(result);
 ```
 
 Evaluates to false due to to 0.1 + 0.2 = 0.30000000000000004. This is due to 
@@ -39,23 +39,8 @@ such as [bignumber.js](https://github.com/MikeMcl/bignumber.js/)
 Bignumber.js and other modules like it cleanly translate decimals from binary 
 to base-10, please refer to their documentation for implementation instructions.
 
-Without a tool like BigNumber, our functions above would be dramatically 
+Without a tool like BigNumber, our functions below would be dramatically 
 inaccurate. 
-
-## Present Value - Lump Sum:
-
-```javascript
-import { presentValue } from 'mortgage-quant';
-
-const futureValue = 200_000; 
-const annualInterestRate = 0.01; 
-const numberOfYears = 30; 
-
-const myPresentValue = presentValue(futureValue, annualInterestRate, numberOfYears);
-
-console.log(myPresentValue);
-// returns 148_384.58355742485697957747
-```
 
 
 ## About Present Value - Lump Sum
@@ -83,7 +68,9 @@ How much would you need to put into an investment to earn your $100k down
 payment, with interest rates at 3.25%?
 
 const futureValue = 100_000; 
+
 const annualInterestRate = 0.0325; 
+
 const numberOfYears = 10; 
 
 Present Value = $72,627.22
@@ -92,25 +79,25 @@ So $72,627.22 is the amount of the present investment you'd need to make to
 earn your $100,000 over 10 years, with an APR of 3.25%. 
 
 
+## Present Value - Lump Sum:
+
+```javascript
+import { presentValue } from 'mortgage-quant';
+
+const futureValue = 200_000; 
+const annualInterestRate = 0.01; 
+const numberOfYears = 30; 
+
+const myPresentValue = presentValue(futureValue, annualInterestRate, numberOfYears);
+
+console.log(myPresentValue);
+// returns 148_384.58355742485697957747
+```
+
 
 ---
 
 
-## Future Value - Lump Sum:
-
-```javascript
-import { futureValue } from 'mortgage-quant';
-
-const presentValue = 148_384.58355742485697957747; 
-const annualInterestRate = 0.01;
-const numberOfYears = 30;
-
-const myFutureValue = futureValue(presentValue, annualInterestRate, numberOfYears);
-
-console.log(myFutureValue);
-// returns 200000.000000000004071073225607124555368865704...
-
-```
 ## About Future Value - Lump Sum:
 Future value is the yield of any flat investment made today, given a present 
 value (lump investment), an annual interest rate, and the number of years you 
@@ -135,6 +122,7 @@ At a $30,000 cost for a savings of $133.63 per month, are the mortgage points
 worth it?
 
 Case 1 (without points): $1,517,774.52 total mortgage cost
+
 Case 2 (with points): $1,469,668.25 total mortgage cost
 
 So by paying $30k now, you'll save $48,106.27 on your mortgage costs
@@ -165,24 +153,26 @@ As we can observe, the return from a relatively low yield investment like bonds
 will still return more than purchasing mortgage points with a difference of 
 $14,088.20 in profit.
 
----
 
-
-## Present Value of an Annuity
+## Future Value - Lump Sum:
 
 ```javascript
-import { presentValueAnnuity } from 'mortgage-quant';
+import { futureValue } from 'mortgage-quant';
 
-const payment = 7_406; 
-const interestRate = 0.01;
-const numberOfPayments = 360;
+const presentValue = 148_384.58355742485697957747; 
+const annualInterestRate = 0.01;
+const numberOfYears = 30;
 
-const myPresentValueAnnuity = presentValueAnnuity(payment, interestRate, numberOfPayments);
+const myFutureValue = futureValue(presentValue, annualInterestRate, numberOfYears);
 
-console.log(myPresentValueAnnuity);
-// returns 
+console.log(myFutureValue);
+// returns 200000.000000000004071073225607124555368865704...
 
 ```
+
+
+---
+
 
 # About Present Value of an Annuity
 
@@ -201,8 +191,8 @@ This equation allows lenders to check the viability of a mortgage; what a
 stream of mortgage payments will eventually return over time, and to show the 
 investor whether the price they're paying is above or below expected value.
 
-In simple terms, the present value of an annuity is the value of all future 
-annuity payments. It calculates the present value of future cash flows.
+In simple terms, the present value of an annuity is the value of a continuous 
+stream of payments over a future period of time in today's dollars. 
 
 Given a monthly payment, an interest rate, and the number of payments to be 
 made, the present value of an annuity will output your total loan amount.
@@ -210,33 +200,33 @@ made, the present value of an annuity will output your total loan amount.
 Example: 
 
 const payment = 3265.93; 
+
 const interestRate = 0.0275;
+
 const numberOfPayments = 360;
 
 Total Loan Amount = 800,000
 
---NOTE TO NOLAN - FUNCTION DOES NOT OUTPUT THIS, SOMETHING WENT WRONG--
-
----
 
 
-## Future Value with Payments
+## Present Value of an Annuity
 
 ```javascript
-import { futureValueWithPayments } from 'mortgage-quant';
+import { presentValueAnnuity } from 'mortgage-quant';
 
-const interestRate = 0.04;
+const payment = 7_406; 
+const interestRate = 0.01;
 const numberOfPayments = 360;
-const payment = -3437.39;
-const presentValue = 720_000;
 
-const myFutureValueWithPayments = 
-futureValueWithPayments(interestRate, numberOfPayments, payment, presentValue);
+const myPresentValueAnnuity = presentValueAnnuity(payment, interestRate, numberOfPayments);
 
-console.log(myFutureValueWithPayments);
+console.log(myPresentValueAnnuity);
 // returns 
 
 ```
+
+---
+
 
 ## About Future Value with Payments:
 
@@ -259,24 +249,27 @@ investment, simply leave the present value blank -- as we've set it to default
 to 0.
 
 
----
 
-
-## Monthly Payment
+## Future Value with Payments
 
 ```javascript
-import { monthlyPayment } from 'mortgage-quant';
+import { futureValueWithPayments } from 'mortgage-quant';
 
-const principal = 800_000; 
-const apr = 0.05;
+const interestRate = 0.04;
 const numberOfPayments = 360;
+const payment = -3437.39;
+const presentValue = 720_000;
 
-const myMonthlyPayment = monthlyPayment(principal, apr, numberOfPayments);
+const myFutureValueWithPayments = 
+futureValueWithPayments(interestRate, numberOfPayments, payment, presentValue);
 
-console.log(myMonthlyPayment);
+console.log(myFutureValueWithPayments);
 // returns 
 
 ```
+
+---
+
 
 ## About Monthly Payment
 
@@ -312,7 +305,44 @@ well as total interest paid and your equity stake for every month of your
 mortgage.
 
 
+## Monthly Payment
+
+```javascript
+import { monthlyPayment } from 'mortgage-quant';
+
+const principal = 800_000; 
+const apr = 0.05;
+const numberOfPayments = 360;
+
+const myMonthlyPayment = monthlyPayment(principal, apr, numberOfPayments);
+
+console.log(myMonthlyPayment);
+// returns 
+
+```
+
 --- 
+
+
+## About Amortization Schedule:
+
+An amortization schedule gives mortgage borrowers a full view into their 
+financial outlook.
+
+With just a few simple inputs, this function will populate an array featuring 
+your payments at every period of your mortgage. 
+
+This particular amortization schedule is designed for 30 year fixed mortgages, 
+and details your:
+- Monthly payment
+- Remaining balance
+- Amount paid into principal
+- Total principal paid
+- Amount paid into interest
+- Total interest paid
+- Total equity -- OUR FUNCTION DOES NOT INCLUDE DOWN PAYMENT AS PART OF EQUITY
+
+for every month of your loan.
 
 
 ## Amortization Schedule
@@ -336,23 +366,9 @@ console.log(myAmortizationSchedule);
 
 ```
 
-## About Amortization Schedule:
 
-An amortization schedule gives mortgage borrowers a full view into their 
-financial outlook.
 
-With just a few simple inputs, this function will populate an array featuring 
-your payments at every period of your mortgage. 
+## Roadmap
 
-This particular amortization schedule is designed for 30 year fixed mortgages, 
-and details your:
-- Monthly payment
-- Remaining balance
-- Amount paid into principal
-- Total principal paid
-- Amount paid into interest
-- Total interest paid
-- Total equity -- OUR FUNCTION DOES NOT INCLUDE DOWN PAYMENT AS PART OF EQUITY
-
-for every month of your loan.
-
+- Include down payment as part of equity equation in the amortizationSchedule.
+- Fix error in present value annuity.

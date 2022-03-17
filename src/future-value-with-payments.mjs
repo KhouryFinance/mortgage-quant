@@ -9,7 +9,7 @@ import { monthlyInterestRate } from "./utils.mjs";
 
 // Given I need to take out 720k for my 30 year fixed rate mortgage at 4%, what will I end up paying?
 // futureValueWithPayments (0.04, 360, -3437.39, 720_000) = 
-  // ?????? - gives 0, which isn't what I expected, and isn't useful to people. It simply states that at these payments with this interest, you'll pay off your loan. Doesn't include interest paid over the period, as amortization does.
+  // solved - inputting the interim gets you principal paid
 
 export const futureValueWithPayments = (
   interestRate,
@@ -36,11 +36,16 @@ export const futureValueWithPayments = (
 };
 
 
-// const futureValuePaymentsAnswer = futureValueWithPayments(
-  //monthlyInterestRate(0.04),
-  //360,
-  //-3437.39, // negative values for paying off a loan, positive values for an investment you continually put money into
-  //720_000
-//);
+const futureValuePaymentsAnswer = futureValueWithPayments(
+  monthlyInterestRate(0.04),
+  180,
+  -3437.39, // negative values for paying off a loan, positive values for an investment you continually put money into
+  720_000
+);
 
-// console.log("Future Value of Payments:", futureValuePaymentsAnswer.toString()//);
+console.log("Future Value of Payments:", futureValuePaymentsAnswer.toString());
+
+// If you input the period halfway, or at any point, you'll find the amount of
+// principal you still have to pay, or if you subtract the output from your
+// present value (loan amount), you'll have the amount of principal you've paid
+// so far
