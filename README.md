@@ -56,7 +56,7 @@ This function can help people who want to save up for a down payment determine
 how much they'd need to invest, at a particular interest rate, for a specific 
 period of time, in order to save up for a down payment (future value).
 
-Example:
+### Example:
 
 Let's say you want to save up for a down payment of $100,000 -- but you only 
 have a windfall of cash to invest, and can't make continuous payments into your 
@@ -109,10 +109,12 @@ miniscule inaccuracies. The reasons for these inaccuracies is explained above.
 This function can help home buyers determine whether or not it's worthwhile to 
 pay for discount points. 
 
-Example:
+### Example:
 
-Let's take a simple example of a $1,000,000 30 year fixed mortgage with a 3% 
-interest rate, and a $4216,04 monthly payment. 
+Let's take a simple example of a:
+- $1,000,000 30 year fixed mortgage with a 
+- 3% interest rate, and a 
+- $4216,04 monthly payment. 
 
 Let's assume you have the opportunity to pay for 3 discount points -- which 
 usually cost 1% of the total loan amount per discount point. Let's say these 
@@ -121,20 +123,19 @@ points will lower your interest rate by 0.25%.
 At a $30,000 cost for a savings of $133.63 per month, are the mortgage points 
 worth it?
 
-Case 1 (without points): $1,517,774.52 total mortgage cost
+- Case 1 (without points): $1,517,774.52 total mortgage cost
 
-Case 2 (with points): $1,469,668.25 total mortgage cost
+- Case 2 (with points): $1,469,668.25 total mortgage cost
 
 So by paying $30k now, you'll save $48,106.27 on your mortgage costs
-over 30 years, saving you a total of $18,106.27.
+over 30 years. 
+
+Leaving you total savings of of $18,106.27.
 
 Seems solid. If you're planning on living in this home for 30 years this seems 
 like a no brainer right? 
 
 Wrong.
-
-Present value shows us that this isn't necessarily the case, due to the time 
-value of money.
 
 You could be investing that $30k elsewhere, and what would that be worth over
 30 years?
@@ -189,15 +190,14 @@ elsewhere.
 
 This equation allows lenders to check the viability of a mortgage; what a 
 stream of mortgage payments will eventually return over time, and to show the 
-investor whether the price they're paying is above or below expected value.
+investor whether the price they're paying is above or below expected value, 
+taking into account the time value of money. 
 
-In simple terms, the present value of an annuity is the value of a continuous 
-stream of payments over a future period of time in today's dollars. 
+It outputs the maximum loan amount that would be viable given the future 
+stream of payments:
 
-Given a monthly payment, an interest rate, and the number of payments to be 
-made, the present value of an annuity will output your total loan amount.
 
-Example: 
+### Example: 
 
 const payment = 3265.93; 
 
@@ -214,21 +214,22 @@ Total Loan Amount = 800,000
 ```javascript
 import { presentValueAnnuity } from 'mortgage-quant';
 
-const payment = 7_406; 
-const interestRate = 0.01;
+const payment = 3_265.93; 
+const interestRate = 0.00229166666;
 const numberOfPayments = 360;
 
 const myPresentValueAnnuity = presentValueAnnuity(payment, interestRate, numberOfPayments);
 
 console.log(myPresentValueAnnuity);
-// returns 
+// returns $800,000, the maximum loan amount that would be presently worth the 
+// future annuity payments
 
 ```
 
 ---
 
 
-## About Future Value with Payments:
+## About Future Value with Payments (Annuity + Annuity & Present Value):
 
 This function determines the future value of a present investment, similar to 
 the future value lump sum mentioned above -- however, this function also takes 
@@ -248,6 +249,19 @@ In order to find out the future value of an annuity, without any present
 investment, simply leave the present value blank -- as we've set it to default 
 to 0.
 
+For the use case of a mortgage borrower, this function can tell you how much the 
+remaining principal on your loan is, at any specified time period.
+
+### Example:
+
+Let’s say you want to figure out how much principal you’ve paid off 10 years 
+into your 30 year fixed rate mortgage:
+
+- with an interest rate of 3.5%,
+- number of payments being 360,
+- a monthly payment of $3,143.31,
+- and a mortgage amount of $700,000:
+
 
 
 ## Future Value with Payments
@@ -255,16 +269,16 @@ to 0.
 ```javascript
 import { futureValueWithPayments } from 'mortgage-quant';
 
-const interestRate = 0.04;
-const numberOfPayments = 360;
-const payment = -3437.39;
-const presentValue = 720_000;
+const interestRate = 0.035;
+const numberOfPayments = 120; // 10 years into your loan (10yrs * 12 months)
+const payment = -3143.31; // negative due to it being a payment, not an investment
+const presentValue = 700_000;
 
 const myFutureValueWithPayments = 
 futureValueWithPayments(interestRate, numberOfPayments, payment, presentValue);
 
 console.log(myFutureValueWithPayments);
-// returns 
+// returns $541,988.53 -- the remaining principal of your loan yet to be paid off
 
 ```
 
@@ -317,7 +331,7 @@ const numberOfPayments = 360;
 const myMonthlyPayment = monthlyPayment(principal, apr, numberOfPayments);
 
 console.log(myMonthlyPayment);
-// returns 
+// returns $4294.57
 
 ```
 
@@ -362,7 +376,7 @@ const myAmortizationSchedule = amortizationSchedule(
   );
 
 console.log(myAmortizationSchedule);
-// returns 
+// returns a full schedule for every month of the loan
 
 ```
 

@@ -37,10 +37,10 @@ export const futureValueWithPayments = (
 
 
 const futureValuePaymentsAnswer = futureValueWithPayments(
-  monthlyInterestRate(0.04),
-  180,
-  -3437.39, // negative values for paying off a loan, positive values for an investment you continually put money into
-  720_000
+  monthlyInterestRate(0.035),
+  120,
+  -3143.31, // negative values for paying off a loan, positive values for an investment you continually put money into
+  700_000
 );
 
 console.log("Future Value of Payments:", futureValuePaymentsAnswer.toString());
