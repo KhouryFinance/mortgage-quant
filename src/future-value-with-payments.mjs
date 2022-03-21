@@ -1,5 +1,4 @@
 import BigNumber from "bignumber.js";
-import { monthlyInterestRate } from "./utils.mjs";
 
 // Determines the future value of a present investment, given an interest rate, number of payments to be made over the term (positive for accumulating investments, negative for paying off a loan), and amount paid each period.
 
@@ -13,8 +12,8 @@ import { monthlyInterestRate } from "./utils.mjs";
 
 export const futureValueWithPayments = (
   interestRate,
-  numberOfPayments,
   payment,
+  numberOfPayments,
   presentValue = BigNumber(0), // default allows for calculations of plain future annuity
 ) => {
   interestRate = BigNumber(interestRate);
@@ -32,5 +31,5 @@ export const futureValueWithPayments = (
 
   const interestPaid = presentValue.times(compoundInterest);
 
-  return interestPaid.plus(simpleFutureValue);
+  return interestPaid.plus(simpleFutureValue)
 };

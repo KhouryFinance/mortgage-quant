@@ -1,10 +1,8 @@
 import BigNumber from "bignumber.js";
 
-export { futureValue } from "./src/future-value-lump-sum.mjs";
-export { futureValueWithPayments } from "./src/future-value-with-payments.mjs";
-export { presentValue } from "./src/present-value-lump-sum.mjs";
-export { presentValueAnnuity } from "./src/present-value-annuity.mjs";
-export { monthlyPayment } from "./src/monthly-payment.mjs";
+export { futureValueWithPayments as futureValue } from "./src/future-value-with-payments.mjs";
+export { presentValueAnnuity as presentValue } from "./src/present-value-annuity.mjs";
+export { monthlyPayment as payment } from "./src/monthly-payment.mjs";
 export { amortizationSchedule } from "./src/amortization-schedule.mjs";
 export { monthlyInterestRate } from "./src/utils.mjs";
 

@@ -7,5 +7,6 @@ test("Returns the expected value", () => {
   const periods = 360
 
   const result = presentValue(interestRate, payment, periods)
-  expect(result).toEq(200000.30)
+
+  expect(result.decimalPlaces(2)).toEqual(BigNumber(200000.30))
 });

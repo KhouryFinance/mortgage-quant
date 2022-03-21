@@ -1,3 +1,4 @@
+import BigNumber from "bignumber.js";
 import { payment } from "../"
 
 test("Returns the expected value", () => {
@@ -5,6 +6,6 @@ test("Returns the expected value", () => {
   const interestRate = 0.005
   const periods = 360
 
-  const result = futureValue(interestRate, periods, presentValue)
-  expect(result).toEq(869.81)
+  const result = payment(interestRate, periods, presentValue)
+  expect(result.decimalPlaces(2)).toEqual(BigNumber(869.81))
 });
