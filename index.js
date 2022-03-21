@@ -1,22 +1,46 @@
-// Lets implement your first function
-// For now we are not bothering with exporting anything because we are just
-// testing our functions and seeing if they output the right stuff.
-// You can check out bankroll for an implementation example in ruby:
-// https://github.com/nolantait/bankroll/blob/master/lib/bankroll/present_value.rb
+import BigNumber from "bignumber.js";
+import { monthlyInterestRate } from "./src/utils.mjs";
 
-// Things you might want to look up to help you:
-// - Annuity factor
-// - Mortgage factor
-// - Fixed annuities
-// - Floating point math in Javascript
+export { futureValue } from "./src/future-value-lump-sum.mjs";
+export { futureValueWithPayments } from "./src/future-value-with-payments.mjs";
+export { presentValue } from "./src/present-value-lump-sum.mjs";
+export { presentValueAnnuity } from "./src/present-value-annuity.mjs";
+export { monthlyPayment } from "./src/monthly-payment.mjs";
+export { amortizationSchedule } from "./src/amortization-schedule.mjs";
+export { monthlyInterestRate } from "./src/utils.mjs";
 
-const presentValue = (interestRate, periods, monthlyPayment) => {
-  // Here we do stuff, to start I'm just logging Hello World so when you run
-  // `yarn start` from the command line it shows something
-  console.log("Hello world");
+
+
+
+// FUTURE TOTAL COST OF A FIXED RATE MORTGAGE
+// Monthly payments * # of months
+// doesn't account for variable rates
+
+const futureValueMortgage = (
+  numberOfPayPeriods,
+  annualInterestRate,
+  periodicPayment,
+  newPresentValue
+) => {
+  numberOfPayPeriods = BigNumber(numberOfPayPeriods);
+  annualInterestRate = BigNumber(annualInterestRate);
+  periodicPayment = BigNumber(periodicPayment);
+  newPresentValue = BigNumber(newPresentValue);
+
+  let effectiveRate = annualInterestRate
+    .plus(1)
+    .exponentiatedBy(numberOfPayPeriods);
+
+  return effectiveRate
+    .times(newPresentValue)
+    .plus(
+      periodicPayment
+        .times(annualInterestRate.times(0).plus(1))
+        .times(effectiveRate.minus(1))
+        .dividedBy(annualInterestRate)
+    );
 };
 
-// 1% interest rate, 30 years, $200,000
-// - Use an online calculator to find the answer
-// - Run `yarn start` in your console to see the output and check your answer
-presentValue(0.01, 360, 200_000);
+let myFutureValueMortgage = futureValueMortgage(360, monthlyInterestRate(0.0275), -3265.93, 800000);
+
+console.log(myFutureValueMortgage.toFixed(4));
