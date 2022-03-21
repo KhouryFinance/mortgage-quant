@@ -14,8 +14,3 @@ export const presentValue = (
     apr.plus(1).exponentiatedBy(numberOfYears)
   );
 };
-
-// const presentValueAnswer = presentValue(0.0325, 10, 100_000);
-
-// console.log("Present Value:", presentValueAnswer.toString());
-

@@ -13,7 +13,3 @@ export const futureValue = (periodicRate, compoundingPeriods, presentValue) => {
     periodicRate.plus(1).exponentiatedBy(compoundingPeriods)
   );
 };
-
-// const futureValueAnswer = futureValue(0.0246, 30, 30000);
-
-// console.log("Future Value:", futureValueAnswer.toString());

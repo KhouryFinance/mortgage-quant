@@ -15,8 +15,3 @@ export const monthlyPayment = (principal, apr, numberOfPayments) => {
   let denominator = compoundInterest.minus(1);
   return numerator.dividedBy(denominator);
 };
-
-
-// const monthlyPaymentAnswer = monthlyPayment(800_000, 0.05, 360);
-
-// console.log("Monthly Payment:", monthlyPaymentAnswer.toString());

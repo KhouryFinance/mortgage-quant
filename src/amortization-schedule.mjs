@@ -3,9 +3,9 @@ import { monthlyPayment } from "./monthly-payment.mjs";
 
 // The following function determines the amount of your monthly payment that goes towards principal:
 
-const amortizationPrincipal = ( 
+const amortizationPrincipal = (
   monthlyPayment,
-  outstandingBalance, 
+  outstandingBalance,
   interestRate
 ) => {
   monthlyPayment = BigNumber(monthlyPayment);

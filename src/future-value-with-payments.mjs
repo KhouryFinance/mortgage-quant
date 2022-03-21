@@ -34,18 +34,3 @@ export const futureValueWithPayments = (
 
   return interestPaid.plus(simpleFutureValue);
 };
-
-
-const futureValuePaymentsAnswer = futureValueWithPayments(
-  monthlyInterestRate(0.035),
-  120,
-  -3143.31, // negative values for paying off a loan, positive values for an investment you continually put money into
-  700_000
-);
-
-console.log("Future Value of Payments:", futureValuePaymentsAnswer.toString());
-
-// If you input the period halfway, or at any point, you'll find the amount of
-// principal you still have to pay, or if you subtract the output from your
-// present value (loan amount), you'll have the amount of principal you've paid
-// so far
