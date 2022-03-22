@@ -6,15 +6,11 @@ import BigNumber from "bignumber.js";
 
 // From a borrowers perspective it determines: how much you'll end up paying over the coarse of a loan. 
 
-// Given I need to take out 720k for my 30 year fixed rate mortgage at 4%, what will I end up paying?
-// futureValueWithPayments (0.04, 360, -3437.39, 720_000) = 
-  // solved - inputting the interim gets you principal paid
-
-export const futureValueWithPayments = (
+export const futureValue = (
   interestRate,
-  payment,
+  payment = BigNumber(0), // default or 0 for lump sum calculations
   numberOfPayments,
-  presentValue = BigNumber(0), // default allows for calculations of plain future annuity
+  presentValue = BigNumber(0), // default or 0 allows for calculations of plain future annuity
 ) => {
   interestRate = BigNumber(interestRate);
   numberOfPayments = BigNumber(numberOfPayments);

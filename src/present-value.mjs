@@ -2,7 +2,7 @@ import BigNumber from "bignumber.js";
 
 // Determines the present value of future cash flows. 
 
-export const presentValueAnnuity = (payment, apr, numberOfPayments) => {
+export const presentValue = (payment, apr, numberOfPayments) => {
   payment = BigNumber(payment);
   apr = BigNumber(apr);
   numberOfPayments = BigNumber(numberOfPayments);
