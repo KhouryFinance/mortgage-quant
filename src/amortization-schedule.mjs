@@ -8,12 +8,11 @@ export const amortizationSchedule = (
   interestRate,
   periods,
 ) => {
-  let counter = 0;
-  const amortizationArray = [];
+  const scheduleOfPayments = [];
 
   let remainingBalance = BigNumber(presentValue);
   let totalInterestPaid = BigNumber(0);
-  let payment = monthlyPayment({
+  const payment = monthlyPayment({
     presentValue,
     interestRate,
     periods
@@ -31,20 +30,10 @@ export const amortizationSchedule = (
     remainingBalance = row.remainingBalance;
     totalInterestPaid = row.totalInterestPaid;
 
-    const result = {
-      payment: row.row[0],
-      balance: row.row[1],
-      principal: row.row[2],
-      totalInterest: row.row[3],
-      interest: row.row[4],
-      totalPrincipal: row.row[5],
-      percentEquity: row.row[6]
-    }
-
-    amortizationArray.push(result);
+    scheduleOfPayments.push(row);
   }
 
-  return amortizationArray;
+  return scheduleOfPayments;
 };
 
 // The following function determines the amount of your monthly payment that goes towards principal:
@@ -61,9 +50,13 @@ const amortizationPrincipal = ({
   );
 };
 
+export const formatSchedule = (scheduleOfPayments) => {
+  return scheduleOfPayments.map((row) => formatRow(row))
+}
+
 // This builds the rows for the array:
 
-const buildRow = ({
+const formatRow = ({
   payment,
   remainingBalance,
   principal,
@@ -77,15 +70,15 @@ const buildRow = ({
     return formattedNumber;
   };
 
-  const row = [];
-  row.push(format(payment));
-  row.push(format(remainingBalance));
-  row.push(format(principal));
-  row.push(format(totalInterestPaid));
-  row.push(format(interest));
-  row.push(format(totalPrincipal));
-  row.push(format(percentEquity) + "%");
-  return row;
+  return {
+    payment: format(payment),
+    remainingBalance: format(remainingBalance),
+    principal: format(principal),
+    totalInterestPaid: format(totalInterestPaid),
+    interest: format(interest),
+    totalPrincipal: format(totalPrincipal),
+    percentEquity: format(percentEquity) + "%"
+  }
 };
 
 // These are the calculations that determine the values for the amortization table:
@@ -114,7 +107,7 @@ const calculateRow = ({
     .dividedBy(presentValue)
     .times(100);
 
-  const row = buildRow({
+  return {
     payment,
     remainingBalance,
     principal,
@@ -122,7 +115,5 @@ const calculateRow = ({
     interest,
     totalPrincipal,
     percentEquity,
-  });
-
-  return { row, remainingBalance, totalInterestPaid };
+  };
 };
