@@ -1,5 +1,5 @@
 import BigNumber from "bignumber.js";
 
-export const monthlyInterestRate = (apr) => {
-  return BigNumber(apr).dividedBy(12);
+export const interestRatePerPeriod = (apr, periods) => {
+  return BigNumber(apr).dividedBy(periods);
 };

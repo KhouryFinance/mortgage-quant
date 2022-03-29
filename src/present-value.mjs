@@ -2,16 +2,16 @@ import BigNumber from "bignumber.js";
 
 // Determines the present value of future cash flows. 
 
-export const presentValue = (payment, apr, numberOfPayments) => {
+export const presentValue = (interestRate, payment, periods) => {
   payment = BigNumber(payment);
-  apr = BigNumber(apr);
-  numberOfPayments = BigNumber(numberOfPayments);
+  interestRate = BigNumber(interestRate);
+  periods = BigNumber(periods);
 
-  const compoundInterest = apr
+  const compoundInterest = interestRate
     .plus(1)
-    .exponentiatedBy(numberOfPayments);
+    .exponentiatedBy(periods);
 
   const numerator = 1 - (1 / compoundInterest);
 
-  return payment.times(numerator / apr);
+  return payment.times(numerator / interestRate);
 };
