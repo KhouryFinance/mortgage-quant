@@ -19,7 +19,7 @@ export const amortizationSchedule = (
     periods
   });
 
-  while (counter < periods) {
+  for(let counter = 0; counter < periods; counter++) {
     const row = calculateRow({
       payment,
       remainingBalance,
@@ -42,7 +42,6 @@ export const amortizationSchedule = (
     }
 
     amortizationArray.push(result);
-    counter++;
   }
 
   return amortizationArray;
