@@ -42,63 +42,62 @@ to base-10, please refer to their documentation for implementation instructions.
 Without a tool like BigNumber, our functions below would be dramatically 
 inaccurate. 
 
+---
 
-## About Present Value - Lump Sum
-Present value is the current value of money you expect in the future, given a 
-specified rate of return and time period (specifically in months for this 
-function).
+# About Present Value of an Annuity
 
-The purpose of any present value calculation is to determine the investment
-it would take to reach a future value with a one-time investment, 
-over a period of time, with a specific interest rate.
+While the previous present value function dealt with lump sums, present value 
+of an annuity deals with a continuous stream of payments.
 
-This function can help people who want to save up for a down payment determine 
-how much they'd need to invest, at a particular interest rate, for a specific 
-period of time, in order to save up for a down payment (future value).
+In the context of mortgages, present value of an annuity gives us the lender's 
+perspective: will the return from the stream of payments be higher than the 
+present amount that I'm lending?
 
-### Example:
+With respect to the time value of money, present cash is more valuable than the 
+same amount paid over time, given the opportunity cost of not investing it 
+elsewhere.
 
-Let's say you want to save up for a down payment of $100,000 -- but you only 
-have a windfall of cash to invest, and can't make continuous payments into your 
-investment over time.
+This equation allows lenders to check the viability of a mortgage; what a 
+stream of mortgage payments will eventually return over time, and to show the 
+investor whether the price they're paying is above or below expected value, 
+taking into account the time value of money. 
 
-Let's also say that you want to earn this down payment in 10 years.
-
-How much would you need to put into an investment to earn your $100k down 
-payment, with interest rates at 3.25%?
-
-const futureValue = 100_000; 
-
-const annualInterestRate = 0.0325; 
-
-const numberOfYears = 10; 
-
-Present Value = $72,627.22
-
-So $72,627.22 is the amount of the present investment you'd need to make to 
-earn your $100,000 over 10 years, with an APR of 3.25%. 
+It outputs the maximum loan amount that would be viable given the future 
+stream of payments:
 
 
-## Present Value - Lump Sum:
+### Example: 
+
+const payment = 3265.93; 
+
+const interestRate = 0.0275;
+
+const numberOfPayments = 360;
+
+Total Loan Amount = 800,000
+
+
+
+## Present Value of an Annuity
 
 ```javascript
 import { presentValue } from 'mortgage-quant';
 
-const futureValue = 200_000; 
-const annualInterestRate = 0.01; 
-const numberOfYears = 30; 
+const payment = 3_265.93; 
+const interestRate = 0.00229166666;
+const numberOfPayments = 360;
 
-const myPresentValue = presentValue(futureValue, annualInterestRate, numberOfYears);
+const myPresentValue = presentValue(payment, interestRate, numberOfPayments);
 
 console.log(myPresentValue);
-// returns 148_384.58355742485697957747
-```
+// returns $800,000, the minimum loan amount that would be presently worth the 
+// future annuity payments
 
+```
 
 ---
 
-
-## About Future Value - Lump Sum:
+## About Future Value - With lump sum investment:
 Future value is the yield of any flat investment made today, given a present 
 value (lump investment), an annual interest rate, and the number of years you 
 intend to invest. 
@@ -160,76 +159,21 @@ $14,088.20 in profit.
 ```javascript
 import { futureValue } from 'mortgage-quant';
 
+const payment = 0; // set payment to 0 for lump sum calculations
 const presentValue = 148_384.58355742485697957747; 
 const annualInterestRate = 0.01;
-const numberOfYears = 30;
+const numberOfPeriods = 30;
 
-const myFutureValue = futureValue(presentValue, annualInterestRate, numberOfYears);
+const myFutureValue = futureValue(presentValue, annualInterestRate, numberOfPeriods);
 
 console.log(myFutureValue);
 // returns 200000.000000000004071073225607124555368865704...
 
 ```
 
-
 ---
 
-
-# About Present Value of an Annuity
-
-While the previous present value function dealt with lump sums, present value 
-of an annuity deals with a continuous stream of payments.
-
-In the context of mortgages, present value of an annuity gives us the lender's 
-perspective: will the return from the stream of payments be higher than the 
-present amount that I'm lending?
-
-With respect to the time value of money, present cash is more valuable than the 
-same amount paid over time, given the opportunity cost of not investing it 
-elsewhere.
-
-This equation allows lenders to check the viability of a mortgage; what a 
-stream of mortgage payments will eventually return over time, and to show the 
-investor whether the price they're paying is above or below expected value, 
-taking into account the time value of money. 
-
-It outputs the maximum loan amount that would be viable given the future 
-stream of payments:
-
-
-### Example: 
-
-const payment = 3265.93; 
-
-const interestRate = 0.0275;
-
-const numberOfPayments = 360;
-
-Total Loan Amount = 800,000
-
-
-
-## Present Value of an Annuity
-
-```javascript
-import { presentValueAnnuity } from 'mortgage-quant';
-
-const payment = 3_265.93; 
-const interestRate = 0.00229166666;
-const numberOfPayments = 360;
-
-const myPresentValueAnnuity = presentValueAnnuity(payment, interestRate, numberOfPayments);
-
-console.log(myPresentValueAnnuity);
-// returns $800,000, the maximum loan amount that would be presently worth the 
-// future annuity payments
-
-```
-
----
-
-
-## About Future Value with Payments (Annuity + Annuity & Present Value):
+## About Future Value (with Annuity):
 
 This function determines the future value of a present investment, similar to 
 the future value lump sum mentioned above -- however, this function also takes 
@@ -264,20 +208,20 @@ into your 30 year fixed rate mortgage:
 
 
 
-## Future Value with Payments
+## Future Value with Annuity
 
 ```javascript
-import { futureValueWithPayments } from 'mortgage-quant';
+import { futureValue } from 'mortgage-quant';
 
 const interestRate = 0.035;
 const numberOfPayments = 120; // 10 years into your loan (10yrs * 12 months)
 const payment = -3143.31; // negative due to it being a payment, not an investment
 const presentValue = 700_000;
 
-const myFutureValueWithPayments = 
-futureValueWithPayments(interestRate, numberOfPayments, payment, presentValue);
+const myFutureValue = 
+futureValue(interestRate, numberOfPayments, payment, presentValue);
 
-console.log(myFutureValueWithPayments);
+console.log(myFutureValue);
 // returns $541,988.53 -- the remaining principal of your loan yet to be paid off
 
 ```
@@ -380,9 +324,3 @@ console.log(myAmortizationSchedule);
 
 ```
 
-
-
-## Roadmap
-
-- Include down payment as part of equity equation in the amortizationSchedule.
-- Fix error in present value annuity.
