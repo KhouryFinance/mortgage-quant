@@ -5,11 +5,11 @@ test("returns the expected first and last payment", () => {
   const interestRate = 0.05
   const periods = 300
 
-  const schedule = amortizationSchedule(
+  const schedule = amortizationSchedule({
     presentValue,
     interestRate,
     periods
-  )
+  })
 
   const formattedSchedule = formatSchedule(schedule)
 

@@ -1,13 +1,17 @@
 import BigNumber from "bignumber.js";
 import { monthlyPayment } from "./monthly-payment.mjs";
 
+export const formatSchedule = (payments) => {
+  return payments.map((row) => formatRow(row))
+}
+
 // This function iterates over the terms and creates the table:
 
-export const amortizationSchedule = (
+export const amortizationSchedule = ({
   presentValue,
   interestRate,
   periods,
-) => {
+}) => {
   const scheduleOfPayments = [];
 
   let remainingBalance = BigNumber(presentValue);
@@ -49,10 +53,6 @@ const amortizationPrincipal = ({
     )
   );
 };
-
-export const formatSchedule = (scheduleOfPayments) => {
-  return scheduleOfPayments.map((row) => formatRow(row))
-}
 
 // This builds the rows for the array:
 
