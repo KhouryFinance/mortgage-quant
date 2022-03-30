@@ -39,15 +39,16 @@ such as [bignumber.js](https://github.com/MikeMcl/bignumber.js/)
 Bignumber.js and other modules like it cleanly translate decimals from binary 
 to base-10, please refer to their documentation for implementation instructions.
 
-Without a tool like BigNumber, our functions below would be dramatically 
-inaccurate. 
+Without a tool like BigNumber, our functions below would have varying levels 
+of inaccuracy.
 
 ---
 
-# About Present Value of an Annuity
+# About Present Value 
 
-While the previous present value function dealt with lump sums, present value 
-of an annuity deals with a continuous stream of payments.
+This present value function deals with annuity payments, the sort of payments 
+you make while paying off your mortgage -- not to be confused with other present 
+value calculations which take into account lump sum investments.
 
 In the context of mortgages, present value of an annuity gives us the lender's 
 perspective: will the return from the stream of payments be higher than the 
@@ -62,36 +63,23 @@ stream of mortgage payments will eventually return over time, and to show the
 investor whether the price they're paying is above or below expected value, 
 taking into account the time value of money. 
 
-It outputs the maximum loan amount that would be viable given the future 
-stream of payments:
+In other words it outputs the maximum loan amount that would be viable given 
+the future stream of payments that the borrower will be paying:
 
-
-### Example: 
-
-const payment = 3265.93; 
-
-const interestRate = 0.0275;
-
-const numberOfPayments = 360;
-
-Total Loan Amount = 800,000
-
-
-
-## Present Value of an Annuity
+## Present Value 
 
 ```javascript
 import { presentValue } from 'mortgage-quant';
 
 const payment = 3_265.93; 
 const interestRate = 0.00229166666;
-const numberOfPayments = 360;
+const periods = 360;
 
-const myPresentValue = presentValue(payment, interestRate, numberOfPayments);
+const myPresentValue = presentValue({payment, interestRate, periods});
 
 console.log(myPresentValue);
 // returns $800,000, the minimum loan amount that would be presently worth the 
-// future annuity payments
+// future annuity payments that total $1,175,734.8 (payment * numberOfPayments)
 
 ```
 
@@ -102,11 +90,10 @@ Future value is the yield of any flat investment made today, given a present
 value (lump investment), an annual interest rate, and the number of years you 
 intend to invest. 
 
-As we can see both present and future value functions output their reverse with 
-miniscule inaccuracies. The reasons for these inaccuracies is explained above.
-
-This function can help home buyers determine whether or not it's worthwhile to 
-pay for discount points. 
+In the mortgage context this function can help home buyers determine whether or 
+not it's worthwhile to pay for discount points (discount points lower the 
+interest rate over the course of your loan in exchange for a lump sum paid in
+the present):
 
 ### Example:
 
@@ -127,12 +114,10 @@ worth it?
 - Case 2 (with points): $1,469,668.25 total mortgage cost
 
 So by paying $30k now, you'll save $48,106.27 on your mortgage costs
-over 30 years. 
+over 30 years. Leaving you total savings of of $18,106.27.
 
-Leaving you total savings of of $18,106.27.
-
-Seems solid. If you're planning on living in this home for 30 years this seems 
-like a no brainer right? 
+This seems solid. If you're planning on living in this home for 30 years this 
+seems like a no brainer right? 
 
 Wrong.
 
@@ -159,15 +144,20 @@ $14,088.20 in profit.
 ```javascript
 import { futureValue } from 'mortgage-quant';
 
+const interestRate = 0.0246; // annual rate
 const payment = 0; // set payment to 0 for lump sum calculations
-const presentValue = 148_384.58355742485697957747; 
-const annualInterestRate = 0.01;
-const numberOfPeriods = 30;
+const periods = 30; // compounded annually over 30 years
+const presentValue = 30_000; // initial investment
 
-const myFutureValue = futureValue(presentValue, annualInterestRate, numberOfPeriods);
+const myFutureValue = futureValue(
+  interestRate,
+  payment,
+  periods,
+  presentValue
+  );
 
 console.log(myFutureValue);
-// returns 200000.000000000004071073225607124555368865704...
+// returns 62_194.47 -- the return from your 30 year investment into bonds
 
 ```
 
@@ -182,19 +172,11 @@ into account continuous payments.
 These continuous payments must be positive or negative, depending on the 
 perspective of the user. 
 
-In the case of a person wanting to determine the future return on a lump sum 
-investment, with continuous deposits, given an interest rate and a period of 
-time -- the payment should be a positive number.
+For the use case of a mortgage borrower, we use a negative number since the 
+loan payments are counted as a cost. 
 
-In the case of a lender wanting to determine what the minimum return is in order 
-to make an investment worthwhile -- the payment should be a negative number. 
-
-In order to find out the future value of an annuity, without any present 
-investment, simply leave the present value blank -- as we've set it to default 
-to 0.
-
-For the use case of a mortgage borrower, this function can tell you how much the 
-remaining principal on your loan is, at any specified time period.
+This function can tell you how much the remaining principal on your loan is, at 
+any specified time period.
 
 ### Example:
 
@@ -214,12 +196,12 @@ into your 30 year fixed rate mortgage:
 import { futureValue } from 'mortgage-quant';
 
 const interestRate = 0.035;
-const numberOfPayments = 120; // 10 years into your loan (10yrs * 12 months)
-const payment = -3143.31; // negative due to it being a payment, not an investment
+const payment = -3143.31; // negative due to it being a payment, not investment
+const periods = 120; // 10 years into your loan (10yrs * 12 months)
 const presentValue = 700_000;
 
 const myFutureValue = 
-futureValue(interestRate, numberOfPayments, payment, presentValue);
+futureValue(interestRate, periods, payment, presentValue);
 
 console.log(myFutureValue);
 // returns $541,988.53 -- the remaining principal of your loan yet to be paid off
@@ -235,10 +217,10 @@ The purpose of this function is to determine your monthly payment given a
 mortgage amount, monthly compounding interest rate, and number of payments over 
 the course of the mortgage.
 
-Determining your monthly payment is necssary when using other calculators, such 
+Determining your monthly payment is necessary when using other calculators, such 
 as the amortization schedule below.
 
-Example:
+### Example:
 
 You want to buy a home worth $1,000,000, and you're able to put 20% down. The 
 30 year fixed rate mortgage looks most appealing to you, with an APR of 5%.
@@ -268,11 +250,11 @@ mortgage.
 ```javascript
 import { monthlyPayment } from 'mortgage-quant';
 
-const principal = 800_000; 
-const apr = 0.05;
-const numberOfPayments = 360;
+const presentValue = 800_000; // principal loan amount
+const interestRate = 0.05; // annual interest rate
+const periods = 360; // number of payments you'll make
 
-const myMonthlyPayment = monthlyPayment(principal, apr, numberOfPayments);
+const myMonthlyPayment = monthlyPayment({presentValue, interestRate, periods});
 
 console.log(myMonthlyPayment);
 // returns $4294.57
@@ -284,8 +266,8 @@ console.log(myMonthlyPayment);
 
 ## About Amortization Schedule:
 
-An amortization schedule gives mortgage borrowers a full view into their 
-financial outlook.
+An amortization schedule gives borrowers a full view into their mortgage over 
+time.
 
 With just a few simple inputs, this function will populate an array featuring 
 your payments at every period of your mortgage. 
@@ -298,26 +280,29 @@ and details your:
 - Total principal paid
 - Amount paid into interest
 - Total interest paid
-- Total equity -- OUR FUNCTION DOES NOT INCLUDE DOWN PAYMENT AS PART OF EQUITY
+- Total equity
 
-for every month of your loan.
+for every payment period (month) of your loan.
 
 
 ## Amortization Schedule
 
 
 ```javascript
-import { amortizationSchedule } from 'mortgage-quant';
+import { formatSchedule, amortizationSchedule } from 'mortgage-quant';
 
-const loanAmount = 800000;
-const months = 360; 
-const apr = 0.05;
+const payments = 4_294.57 // your monthly payment amount
+const presentValue = 800_000; // your loan amount
+const interestRate = 0.05 // interest rate (annual)
+const periods = 360 // amount of times you'll be making payments (30 years * 12)
 
-const myAmortizationSchedule = amortizationSchedule(
-  loanAmount, 
-  months, 
-  apr
-  );
+const myFormattedSchedule = formatSchedule(payments);
+
+const myAmortizationSchedule = amortizationSchedule({
+  presentValue, 
+  periods, 
+  interestRate
+});
 
 console.log(myAmortizationSchedule);
 // returns a full schedule for every month of the loan
