@@ -2,14 +2,14 @@ import BigNumber from "bignumber.js";
 
 export const futureValue = ({
   interestRate,
-  payment: BigNumber(0), // default or 0 for lump sum calculations
+  payment,
   periods,
-  presentValue: BigNumber(0), // default or 0 allows for calculations of plain future annuity
+  presentValue,
 }) => {
   interestRate = BigNumber(interestRate);
   periods = BigNumber(periods);
-  payment = BigNumber(payment);
-  presentValue = BigNumber(presentValue);
+  payment = BigNumber(payment ?? 0);
+  presentValue = BigNumber(presentValue ?? 0);
 
   const compoundInterest = interestRate
     .plus(1)
