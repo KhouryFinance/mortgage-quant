@@ -1,8 +1,8 @@
 import BigNumber from "bignumber.js";
 import { monthlyPayment } from "./monthly-payment.mjs";
 
-export const formatSchedule = (payments) => {
-  return payments.map((row) => formatRow(row))
+export const formatSchedule = (schedule) => {
+  return schedule.map((row) => formatRow(row))
 }
 
 // This function iterates over the terms and creates the table:

@@ -149,12 +149,12 @@ const payment = 0; // set payment to 0 for lump sum calculations
 const periods = 30; // compounded annually over 30 years
 const presentValue = 30_000; // initial investment
 
-const myFutureValue = futureValue(
+const myFutureValue = futureValue({
   interestRate,
   payment,
   periods,
   presentValue
-  );
+});
 
 console.log(myFutureValue);
 // returns 62_194.47 -- the return from your 30 year investment into bonds
@@ -201,7 +201,7 @@ const periods = 120; // 10 years into your loan (10yrs * 12 months)
 const presentValue = 700_000;
 
 const myFutureValue = 
-futureValue(interestRate, periods, payment, presentValue);
+futureValue({interestRate, periods, payment, presentValue});
 
 console.log(myFutureValue);
 // returns $541,988.53 -- the remaining principal of your loan yet to be paid off
@@ -291,21 +291,34 @@ for every payment period (month) of your loan.
 ```javascript
 import { formatSchedule, amortizationSchedule } from 'mortgage-quant';
 
-const payments = 4_294.57 // your monthly payment amount
 const presentValue = 800_000; // your loan amount
 const interestRate = 0.05 // interest rate (annual)
 const periods = 360 // amount of times you'll be making payments (30 years * 12)
 
-const myFormattedSchedule = formatSchedule(payments);
-
-const myAmortizationSchedule = amortizationSchedule({
+// returns the raw numeric values as BigNumber
+const schedule = amortizationSchedule({
   presentValue, 
   periods, 
   interestRate
 });
 
-console.log(myAmortizationSchedule);
-// returns a full schedule for every month of the loan
+// returns the values formatted as strings
+const formattedSchedule = formatSchedule(schedule);
+
+
+console.log(formattedSchedule);
+// returns [
+// {
+//  payment: '4_294.57',
+//  remainingBalance: '799_038.76',
+//  principal: '961.24',
+//  totalInterestPaid: '3_333.33',
+//  interest: '3_333.33',
+//  totalPrincipal: '961.24',
+//  percentEquity: '0.12%'
+// },
+// ... 358 more payments
+// ];
 
 ```
 

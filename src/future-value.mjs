@@ -1,11 +1,11 @@
 import BigNumber from "bignumber.js";
 
-export const futureValue = (
+export const futureValue = ({
   interestRate,
-  payment = BigNumber(0), // default or 0 for lump sum calculations
+  payment: BigNumber(0), // default or 0 for lump sum calculations
   periods,
-  presentValue = BigNumber(0), // default or 0 allows for calculations of plain future annuity
-) => {
+  presentValue: BigNumber(0), // default or 0 allows for calculations of plain future annuity
+}) => {
   interestRate = BigNumber(interestRate);
   periods = BigNumber(periods);
   payment = BigNumber(payment);
