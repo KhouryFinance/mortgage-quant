@@ -7,15 +7,14 @@ export const presentValue = ({
   payment,
   periods
 }) => {
-  payment = BigNumber(payment);
+  payment      = BigNumber(payment);
   interestRate = BigNumber(interestRate);
-  periods = BigNumber(periods);
+  periods      = BigNumber(periods);
 
-  const compoundInterest = interestRate
-    .plus(1)
-    .exponentiatedBy(periods);
+  const one = BigNumber(1)
+  const compoundInterest = interestRate.plus(one).exponentiatedBy(periods);
+  const compoundGrowth = one.minus(one.dividedBy(compoundInterest));
+  const interestContribution = compoundGrowth.dividedBy(interestRate)
 
-  const numerator = 1 - (1 / compoundInterest);
-
-  return payment.times(numerator / interestRate);
+  return payment.times(interestContribution);
 };
